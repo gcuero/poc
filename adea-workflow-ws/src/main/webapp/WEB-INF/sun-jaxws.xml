@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+  <endpoint implementation="com.adeamx.workflow.webservices.ws.WorkFlowWS" name="WorkFlowWSService" url-pattern="/WorkFlowWSService"/>
+  <endpoint implementation="com.adeamx.workflow.webservices.ws.SeguridadWS" name="SeguridadWSService" url-pattern="/SeguridadWSService"/>
+  <endpoint implementation="com.adeamx.workflow.webservices.ws.ConfSistemaWS" name="ConfSistemaWSService" url-pattern="/ConfSistemaWSService"/>
+</endpoints>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+       xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                        http://www.springframework.org/schema/oxm
+                        http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+                        http://www.springframework.org/schema/util
+                        http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                        http://www.springframework.org/schema/tx 
+                        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                        http://jax-ws.dev.java.net/spring/core
+                        http://jax-ws.dev.java.net/spring/core.xsd
+                        http://jax-ws.dev.java.net/spring/servlet
+                        http://jax-ws.dev.java.net/spring/servlet.xsd
+                        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd">
+
+
+    <!-- Enables automatic mapping of fund objects to and from JSON -->
+    <mvc:annotation-driven/>
+
+    <!-- Setup spring to pull in @Controller, @RequestMapping, etc Configuration scans specified packages
+    for classes configured as Spring managed beans and automatically sets up objects annotated with
+    @Controller, @Service etc. -->
+    <context:component-scan base-package="com.adeamx.workflow.webservices.rest" />
+    <context:component-scan base-package="com.adeamx.workflow.webservices.ws" />
+    <context:component-scan base-package="org.kudytech.query" />
+    <context:component-scan base-package="org.kudytech.confsistema.dao.impl" />
+    <context:component-scan base-package="org.kudytech.confsistema.service.impl" />
+    <context:component-scan base-package="org.kudytech.confsistema.utils" />
+    <context:component-scan base-package="org.kudytech.webmx" />    
+    <context:component-scan base-package="org.kudytech.workflow" />
+    <context:component-scan base-package="org.kudytech.workflow.service.impl" />
+    <context:component-scan base-package="org.kudytech.dao.utils" />
+    <context:component-scan base-package="org.kudytech.common.utils"/>
+    <context:component-scan base-package="org.kudytech.mobile.security.service"/>
+    <context:component-scan base-package="org.kudytech.mobile.security.dao"/>
+    <context:component-scan base-package="com.adeamx" />
+
+    <!-- TODO -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+
+    <!-- Configures view for returning JSON to the client -->
+    <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+        <property name="contentType" value="text/plain"/>
+    </bean>
+
+    <!-- TODO -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <util:list id="beanList">
+                <ref bean="jsonMessageConverter"/>
+                <ref bean="jsonDateMessageConverter"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <wss:binding url="/ConfSistema">
+        <wss:service>
+            <ws:service bean="#confSistemaWS"/>
+        </wss:service>
+    </wss:binding>
+    
+    <wss:binding url="/Seguridad">
+        <wss:service>
+            <ws:service bean="#seguridadWS"/>
+        </wss:service>
+    </wss:binding>
+    
+    <wss:binding url="/Workflow">
+        <wss:service>
+            <ws:service bean="#workFlowWS"/>
+        </wss:service>
+    </wss:binding>
+    
+    
+    <!-- Web service methods -->
+    <bean id="confSistemaWS" class="com.adeamx.workflow.webservices.ws.ConfSistemaWS">
+    </bean>
+    
+    <bean id="seguridadWS" class="com.adeamx.workflow.webservices.ws.SeguridadWS">
+    </bean>
+    
+    <bean id="workFlowWS" class="com.adeamx.workflow.webservices.ws.WorkFlowWS">
+    </bean>
+    
+    
+
+    <!-- Converts JSON to POJO and vice versa -->
+    <bean id="jsonMessageConverter" 
+          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+    
+    <bean id="jsonDateMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="objectMapper" ref="jacksonDateMapper" />
+    </bean>
+    
+    <bean id="jacksonDateMapper" class="com.adeamx.workflow.web.utils.DateMapper">
+        <property name="mask" value="yyyy-MM-dd'T'HH:mm:ss" />
+    </bean>
+   
+    <jee:jndi-lookup id="dataSource" jndi-name="${jndi.workflow.name}"/>
+
+    <!-- Session Factory Declaration -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan">
+            <list>
+                <value>org.kudytech.confsistema.model</value>
+                <value>org.kudytech.query.model</value>
+                <value>org.kudytech.workflow.model</value>
+                <value>org.kudytech.mobile.security.model</value>
+            </list>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <prop key="hibernate.current_session_context_class">
+                    thread
+                </prop>
+                <prop key="hibernate.transaction.factory_class">
+                    org.hibernate.transaction.JDBCTransactionFactory
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+    <tx:annotation-driven />
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />  
+    </bean>
+    
+    <jee:jndi-lookup id="mexWebDatasource" jndi-name="${jndi.mexweb.name}"/>
+
+    <!-- MEXWEB Session Factory Declaration -->
+    <bean id="mexWebSessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="mexWebDatasource" />
+        <property name="packagesToScan">
+            <list>
+                <value>org.kudytech.adeamx.mexweb.model</value>
+            </list>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <prop key="hibernate.current_session_context_class">
+                    thread
+                </prop>
+                <prop key="hibernate.transaction.factory_class">
+                    org.hibernate.transaction.JDBCTransactionFactory
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mexWebTransactionManager" 
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="mexWebSessionFactory" />  
+    </bean>
+    
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>WEB-INF/config/app-settings.properties</value>
+                <value>WEB-INF/config/workflow-state-conf.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!--<import resource="mail-config.xml" />-->
+    <import resource="./query-conf-template.xml"/>
+</beans>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>Adea Workflow WS/REST</display-name>
+    
+    <!-- Main configuration file for this Spring web application. -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/config/application-context-config.xml
+        </param-value>
+    </context-param>
+    
+    <!-- Loads the Spring web application context using the config file defined above. -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+    <!-- Define the Spring Dispatcher Servlet for the REST services.
+    The 'contextConfiguration' param with an empty value means that the
+    Spring Context won't try to load a default file called restservices-servlet.xml -->
+    <listener>
+        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>
+    
+    <servlet>
+        <servlet-name>restservices</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value/>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSSpringServlet
+        </servlet-class>
+    </servlet>
+   
+    <servlet>
+        <servlet-name>SeguridadWSService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfSistemaWSService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>restservices</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <url-pattern>/ConfSistema</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <url-pattern>/Seguridad</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <url-pattern>/Workflow</url-pattern>
+    </servlet-mapping>
+    
+</web-app>
