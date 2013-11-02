@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.kudytech.agregation</groupId>
+  <artifactId>adea-workflow-ws-agregator</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+  <name>adea-workflow-ws-agregator</name>
+  
+  <modules>
+    
+    <module>..\kudytech-model-utils</module>
+    <module>..\kudytech-ademx-webmex-model</module>
+    <module>..\kudytech-conf-sistema-model</module>
+    <module>..\kudytech-mobile-security-model</module>
+    <module>..\kudytech-workflow-model</module>
+    <module>..\kudytech-core-commons</module>
+    <module>..\kudytech-dao-utils</module>
+	<module>..\kudytech-commons-utils</module>
+    <module>..\kudytech-conf-sistema-service</module>
+    <module>..\kudytech-webmx-service</module>
+    <module>..\kudytech-workflow-service</module>
+    <module>..\kudytech-mobile-security-service</module>    
+    <module>..\adea-workflow-ws</module>
+
+  </modules>
+  
+</project>
