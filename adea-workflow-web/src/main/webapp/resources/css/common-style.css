@@ -1,0 +1,149 @@
+.ui-themeswitcher a.ui-selectonemenu-label-container {
+    text-decoration: none !important;
+}
+
+.ui-widget, .ui-dt-c, .ui-paginator {
+    font-size: 12px !important;
+}
+
+body {
+    margin: 0px;
+    padding: 0;
+    color: #616161;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 1.6em;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1em;
+    margin-top:20px;
+}
+
+ul {
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a img {
+    border: none;
+}
+
+#legeng {
+    position: absolute;
+    top:76px;
+    right:50px;
+    padding: 0;
+    height: 59px;
+    overflow: hidden;
+}
+
+div#header{
+    /*padding: 0.2em;
+    color: black;
+    clear: left;
+    height: 90px;*/
+    height: 110px;
+    padding: 4px 5px 0 ;
+    position: relative;
+}
+
+div#content {
+    /*margin-left:197px;
+    border-left: none;
+    
+    padding-top:6px;
+    padding-bottom:3px;
+    padding-right:10px;
+    padding-left:10px;*/
+    width: 82%;
+    float:left;
+}
+
+div#left {
+    float: left;
+    width: 15%;
+    padding: 10px 10px ;
+    margin-left: -1px;
+    overflow: hidden;	
+}
+
+
+
+div#left a.ui-state-hover, 
+div#left a.ui-state-highlight {
+    border:0 none;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+div#left table {
+    width: 95%;
+}
+
+div#left table td {
+    vertical-align: top;
+}
+
+div#left ul {
+    padding: 0;
+    margin: 0;
+}
+
+div#left ul li {
+    list-style-type: none;
+    padding: 1px;
+}
+
+
+
+
+
+
+div#footer {
+    padding: 0.5em;
+    color: black;
+    clear: left;
+    height: 50px;
+}
+
+div#fileupload-buttonbar {
+    width: 95%;
+}
+
+.ui-panelmenu .ui-panelmenu-content {
+    overflow: hidden !important;;
+}
+
+hr {
+    border-top: 1px double #f00;
+    color: blue;
+    height: 1px;
+}
+
+.files .name {
+    padding: 0 5px;
+    font-weight: lighter;
+}
+
+
+.ui-panelgrid tr, .ui-panelgrid td {
+border:0 !important;
+}
+

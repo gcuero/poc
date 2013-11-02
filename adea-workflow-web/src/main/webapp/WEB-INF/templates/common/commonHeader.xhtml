@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <ui:composition>
+        <hr class="ui-widget-header"/>
+        <h:graphicImage library="image" style="padding:1px 0 0 0" name="header_adea.jpg" /> <br />
+        <h:graphicImage library="image" style="padding:1px 0 0 0" height="8px" width="100%" name="Cenefa.png" />
+        <div id="legeng">
+
+            <p style="align: right; text-align: right; padding:0 0 0 0" >
+                Bienvenido: <h:outputText value="#{menuController.userName}" /> | <a href="#{request.contextPath}/j_spring_security_logout">Salir</a>
+            </p>
+        </div>
+
+    </ui:composition>
+
+</html>
+
+

@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/templates/common/commonLayout.xhtml">
+        <ui:define name="content">
+            <p></p>
+            <h1>
+                <h:outputText value="Cat&aacute;logo de Proveedor" />
+            </h1>
+
+            <h:form>
+                <p:commandButton value="Nuevo Proveedor" icon="ui-icon-person"
+                                 oncomplete="dlgNuevo.show()"
+                                 actionListener="#{proveedorController.prepareInsert}" />
+                <!--update=":formNvo" />-->
+            </h:form>
+
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <h:form id="propiedades">
+                <p:dataTable var="proveedor" value="#{proveedorController.list}"
+                             emptyMessage="No hay registros en la base" paginator="true"
+                             rows="10" paginatorPosition="bottom"
+                             paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="ID" filterBy="#{proveedor.id}" style="text-align: center">
+                        <h:outputText value="#{proveedor.id}" />
+                    </p:column>
+                    <p:column headerText="Nombre" filterBy="#{proveedor.nombre}">
+                        <h:outputText value="#{proveedor.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Login Alta" filterBy="#{proveedor.loginAlta}">
+                        <h:outputText value="#{proveedor.loginAlta}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha Alta">
+                        <h:outputText value="#{proveedor.fechaAlta}" style="text-align: center">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"  timeZone="GMT-6"  />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Login Modificaci&oacute;n" filterBy="#{proveedor.loginModif}">
+                        <h:outputText value="#{proveedor.loginModif}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha Modificaci&oacute;n">
+                        <h:outputText value="#{proveedor.fechaModif}" style="text-align: center">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"  timeZone="GMT-6"  />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Estatus" style="text-align: center">
+                        <p:graphicImage title=" Activo "  url="../resources/image/ACTIVE.png" rendered="#{proveedor.estatus eq true}" width="24px" />
+                        <p:graphicImage title=" Inactivo "  url="../resources/image/INACTIVE.png" rendered="#{proveedor.estatus eq false}" width="24px" />
+                    </p:column>
+
+                    <p:column style="width:13%; text-align:center" headerText="Acciones">
+                        <p:commandButton update=":propiedades,:messages,:formEditar"
+                                         icon="ui-icon-pencil"
+                                         actionListener="#{proveedorController.setCurrent(proveedor)}"
+                                         title="Editar" oncomplete="dlgEditar.show()" />
+                        <p:commandButton update=":formEliminar" icon="ui-icon-trash"
+                                         actionListener="#{proveedorController.setCurrent(proveedor)}"
+                                         title="Eliminar" oncomplete="dlgEliminar.show()" />
+
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+            <!--Fromulario nuevo--> 
+            <h:form id="formNvo">
+                <p:dialog header="Nuevo usuario" widgetVar="dlgNuevo"
+                          resizable="true" id="dlgNuevo" showEffect="fade"
+                          hideEffect="explode" modal="true">
+                    <h:panelGrid id="pgNuevo" columns="2" cellpadding="4"
+                                 style="margin:0 auto;">
+                        <h:outputText value="Nombre" />
+                        <p:inputText value="#{proveedorController.current.nombre}" maxlength="255" required="true"/>
+                        <h:outputText value="RFC" />
+                        <p:inputText value="#{proveedorController.current.rfc}" maxlength="20" required="true"/>
+                        <h:outputText value="Contacto" />
+                        <p:inputText value="#{proveedorController.current.nombreContacto}" maxlength="255" required="true"/>
+                        <h:outputText value="Email Contacto" />
+                        <p:inputText value="#{proveedorController.current.emailContacto}" maxlength="100" required="true"/>
+                        <h:outputText value="Tel&eacute;fono" />
+                        <p:inputText value="#{proveedorController.current.telefono}" maxlength="50"/>
+                        <h:outputText value="Fax" />
+                        <p:inputText value="#{proveedorController.current.fax}" maxlength="50"/>
+                        
+                        <h:outputText value="Usuario" /><b></b>
+                        <h:outputText value="Login" />
+                        <p:inputText value="#{proveedorController.current.login}" maxlength="20" required="true"/>
+                        
+                        <h:outputText value="Direccion" /><b></b>
+                        <h:outputText value="Calle" />
+                        <p:inputText value="#{proveedorController.domicilio.calleAvenida}" maxlength="255" required="true"/>
+                        <h:outputText value="N&uacute;mero Interior" />
+                        <p:inputText value="#{proveedorController.domicilio.numInt}" maxlength="20" required="true"/>
+                        <h:outputText value="N&uacute;mero Exterior" />
+                        <p:inputText value="#{proveedorController.domicilio.numExt}" maxlength="20"/>
+                        <h:outputText value="Colonia" />
+                        <p:inputText value="#{proveedorController.domicilio.colonia}" maxlength="255" required="true"/>
+                        <h:outputText value="Localidad" />
+                        <p:inputText value="#{proveedorController.domicilio.localidad}" maxlength="255" required="true"/>
+                        <h:outputText value="Municipio" />
+                        <p:inputText value="#{proveedorController.domicilio.municipio}" maxlength="255" required="true"/>
+                        <h:outputText value="CP" />
+                        <p:inputText value="#{proveedorController.domicilio.cp}" maxlength="10" required="true"/>
+                        <h:outputText value="Entre calle 1" />
+                        <p:inputText value="#{proveedorController.domicilio.entreCalle1}" maxlength="255"/>
+                        <h:outputText value="Entre calle 2" />
+                        <p:inputText value="#{proveedorController.domicilio.entreCalle2}" maxlength="255"/>
+                        <h:outputText value="Latitud" />
+                        <p:inputText value="#{proveedorController.domicilio.latitud}" maxlength="50"/>
+                        <h:outputText value="Longitud" />
+                        <p:inputText value="#{proveedorController.domicilio.longitud}" maxlength="50"/>
+
+                    </h:panelGrid>
+                    <br />
+                    <center>
+                        <p:commandButton update=":propiedades,:messages" icon="ui-icon-check"
+                                         title="Aceptar" actionListener="#{proveedorController.insert(actionEvent)}"
+                                         oncomplete="dlgNuevo.hide()" value="Aceptar" />
+                        <p:commandButton update=":propiedades" icon="ui-icon-close"
+                                         title="Cancelar" oncomplete="dlgNuevo.hide()" value="Cancelar" />
+                    </center>
+
+                </p:dialog>
+            </h:form>
+
+            <h:form id="formEditar">
+                <p:dialog header="Editar Propiedad" widgetVar="dlgEditar"
+                          resizable="true" id="dlgEditar" showEffect="fade"
+                          hideEffect="explode" modal="true">
+                    <h:panelGrid id="pgEditar" columns="2" cellpadding="4"
+                                 style="margin:0 auto;">
+                        <h:outputText value="ID" />
+                        <p:inputText value="#{proveedorController.current.id}" maxlength="10" readonly="true"/>
+                        <h:outputText value="Nombre" />
+                        <p:inputText value="#{proveedorController.current.nombre}" maxlength="255" required="true"/>
+                        <h:outputText value="RFC" />
+                        <p:inputText value="#{proveedorController.current.rfc}" maxlength="20" required="true"/>
+                        <h:outputText value="Contacto" />
+                        <p:inputText value="#{proveedorController.current.nombreContacto}" maxlength="255" required="true"/>
+                        <h:outputText value="Email Contacto" />
+                        <p:inputText value="#{proveedorController.current.emailContacto}" maxlength="100" required="true"/>
+                        <h:outputText value="Tel&eacute;fono" />
+                        <p:inputText value="#{proveedorController.current.telefono}" maxlength="50"/>
+                        <h:outputText value="Fax" />
+                        <p:inputText value="#{proveedorController.current.fax}" maxlength="50"/>
+                        <h:outputText value="Usuario" /><b></b>
+                        <h:outputText value="Login" />
+                        <p:inputText value="#{proveedorController.current.login}" maxlength="20" required="true"/>
+                        <h:outputText value="Direccion" /><b></b>
+                        <h:outputText value="Calle" />
+                        <p:inputText value="#{proveedorController.domicilio.calleAvenida}" maxlength="255" required="true"/>
+                        <h:outputText value="N&uacute;mero Interior" />
+                        <p:inputText value="#{proveedorController.domicilio.numInt}" maxlength="20" required="true"/>
+                        <h:outputText value="N&uacute;mero Exterior" />
+                        <p:inputText value="#{proveedorController.domicilio.numExt}" maxlength="20"/>
+                        <h:outputText value="Colonia" />
+                        <p:inputText value="#{proveedorController.domicilio.colonia}" maxlength="255" required="true"/>
+                        <h:outputText value="Localidad" />
+                        <p:inputText value="#{proveedorController.domicilio.localidad}" maxlength="255" required="true"/>
+                        <h:outputText value="Municipio" />
+                        <p:inputText value="#{proveedorController.domicilio.municipio}" maxlength="255" required="true"/>
+                        <h:outputText value="CP" />
+                        <p:inputText value="#{proveedorController.domicilio.cp}" maxlength="10" required="true"/>
+                        <h:outputText value="Entre calle 1" />
+                        <p:inputText value="#{proveedorController.domicilio.entreCalle1}" maxlength="255"/>
+                        <h:outputText value="Entre calle 2" />
+                        <p:inputText value="#{proveedorController.domicilio.entreCalle2}" maxlength="255"/>
+                        <h:outputText value="Latitud" />
+                        <p:inputText value="#{proveedorController.domicilio.latitud}" maxlength="50"/>
+                        <h:outputText value="Longitud" />
+                        <p:inputText value="#{proveedorController.domicilio.longitud}" maxlength="50"/>
+                    </h:panelGrid>
+                    <br />
+                    <center>
+                        <p:commandButton update=":propiedades,:messages" icon="ui-icon-check"
+                                         title="Actualizar"
+                                         actionListener="#{proveedorController.update(actionEvent)}"
+                                         oncomplete="dlgEditar.hide()" value="Aceptar" />
+                        <p:commandButton update=":propiedades" icon="ui-icon-close"
+                                         title="Cancelar" oncomplete="dlgEditar.hide()" value="Cancelar" />
+                    </center>
+                </p:dialog>
+            </h:form>
+            <!--Formulario de eliminacion--> 
+            <h:form id="formEliminar">
+                <p:confirmDialog id="dlgEliminar"
+                                 message="Esta seguro que desea eliminar este registro?"
+                                 header="Eliminar" severity="alert" widgetVar="dlgEliminar">
+                    <p:commandButton update=":propiedades,:messages" icon="ui-icon-check"
+                                     title="Eliminar" actionListener="#{proveedorController.remove(actionEvent)}"
+                                     oncomplete="dlgEliminar.hide()" value="Aceptar" />
+                    <p:commandButton update=":propiedades" icon="ui-icon-close"
+                                     title="Cancelar" oncomplete="dlgEliminar.hide()" value="Cancelar" />
+                </p:confirmDialog>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>

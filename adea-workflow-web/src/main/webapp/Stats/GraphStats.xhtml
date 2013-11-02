@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/templates/common/commonLayout.xhtml">
+        <ui:define name="content">
+            <p></p>
+
+            <h:form id="filtros">
+                <p:panelGrid   style="width: 100%;background: appworkspace" columns="1">  
+                    <f:facet name="header">  
+                        <h:outputLabel  style="font-weight:bold;font-size:24px" value="Orden de Compra" /> 
+                    </f:facet>
+                    <div align="center">
+                        <p:panelGrid columns="6" style="width: 100%;background: appworkspace">  
+                            <f:facet name="header">  
+                                Criterios de busqueda  
+                            </f:facet>  
+                            <h:outputLabel for="fi" value="Fecha Inicial:" />  
+                            <p:calendar id="fi" value="#{graphStatsController.fechaInicial}" pattern="MM/dd/yyyy"/>  
+                            <p:spacer width="0"/>
+                            <h:outputLabel for="pf" value="Tipo de gr&aacute;fica:"/>  
+                            <h:selectOneMenu id="pf" value="#{graphStatsController.graphType}" required="true">  
+                                <f:selectItems value="#{graphStatsController.graphTypes}" />  
+                            </h:selectOneMenu> 
+                            <p:spacer width="0"/>
+                            <h:outputLabel for="ff" value="Fecha Final:" />  
+                            <p:calendar id="ff" value="#{graphStatsController.fechaFinal}" pattern="MM/dd/yyyy"/> 
+                            <p:spacer width="0"/>
+                            <h:outputLabel for="repo" value="Reporte:"/>  
+                            <h:selectOneMenu id="repo" value="#{graphStatsController.chartName}" required="true">  
+                                <f:selectItems value="#{graphStatsController.confGraphs}" />  
+                            </h:selectOneMenu>
+                            <p:spacer width="1"/>
+                            <h:outputText value="" />
+                            <h:outputText value="" />
+                            <h:outputText value="" />
+                            <f:facet name="footer">  
+                                <p:commandButton action="#{graphStatsController.filtrar(actionEvent)}" 
+                                                 value="Buscar" icon="ui-icon-circle-zoomin" update=":filtros:linechart" process="@form filtros:linechart" style="margin:0"/>  
+                            </f:facet>  
+                        </p:panelGrid>
+                    </div>
+                </p:panelGrid>
+                <p:lineChart id="linechart" value="#{graphStatsController.cartesianChartModel}" legendPosition="e"  
+                             title="#{graphStatsController.title}" />  
+            </h:form>
+
+            <h:form id="graph">
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

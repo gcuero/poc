@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=iso-8859-1" />
+        <h:outputStylesheet name="common-style2.css" library="css" />
+
+    </h:head>
+
+    <h:body>
+
+        <div id="page">
+
+            <div id="header">
+                <center>
+                    <ui:insert name="header" >
+                        <ui:include src="/WEB-INF/templates/common/commonHeader2.xhtml" />
+                    </ui:insert>
+                </center>
+            </div>
+            <div id="content">
+                <center>
+                    <ui:insert name="content" >
+                        <ui:include src="/WEB-INF/templates/common/commonContent.xhtml" />
+                    </ui:insert>
+                </center>
+            </div>
+            <div id="footer">
+                <center>
+                    <ui:insert name="footer" >
+                        <ui:include src="/WEB-INF/templates/common/commonFooter.xhtml" />
+                    </ui:insert>
+                </center>
+            </div>
+        </div>
+
+    </h:body>
+
+</html>

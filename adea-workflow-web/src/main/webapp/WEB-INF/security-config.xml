@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+    <!-- secured-annotations="enabled" pre-post-annotations="enabled" jsr250-annotations="enabled" -->
+    <global-method-security jsr250-annotations="enabled"/>
+
+    <http use-expressions="true" auto-config="false" entry-point-ref="entryPoint">
+        <custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
+        <custom-filter position="FORM_LOGIN_FILTER" ref="customFilter"/>
+        <intercept-url pattern="/" access="permitAll"/>
+        <intercept-url pattern="/index.*" access="permitAll"/>
+        <intercept-url pattern="/security/access/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/faces/home.*" access="isAuthenticated()"/>
+        <intercept-url pattern="/faces/*" access="isAuthenticated()"/>
+        <!--        <intercept-url pattern="/**" access="isAuthenticated() and hasRole('ALLOWED_ACCESS') and hasAnyRole('SYS-ADMIN','DAT','ADEA-FACTURACION','FACTURACION_VALIDADOR')"/>-->
+        <logout invalidate-session="true" logout-url="/j_spring_security_logout" logout-success-url="/index.jsp" />
+        <access-denied-handler ref="accessDeniedHandler"/>
+        <session-management invalid-session-url="/index.jsp" session-authentication-strategy-ref="sas"/>
+      
+    </http>
+    <!-- BEANS -->
+    <b:bean id="accessDeniedHandler" class="mx.com.adea.security.core.access.AccessDeniedHandlerJSON"/>
+
+    <b:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+        <b:property name="sessionRegistry" ref="sessionRegistry" />
+        <b:property name="expiredUrl" value="/j_spring_security_logout" />
+    </b:bean>
+
+    <b:bean id="customFilter" class="org.kudytech.web.security.filter.UsernamePasswordAuthenticationFilterJSON">
+        <b:property name="sessionAuthenticationStrategy" ref="sas" />
+        <b:property name="authenticationManager" ref="authenticationManager"/>
+        <b:property name="authenticationSuccessHandler" ref="successHandler"/>
+    </b:bean>
+
+
+
+    <b:bean id="sas" class="mx.com.adea.security.core.session.ConcurrentSessionControlStrategy">
+        <b:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+        <b:property name="maximumSessions" value="1" />
+        <b:property name="exceptionIfMaximumExceeded" value="true"/>
+    </b:bean>
+
+    <b:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+ 
+    <b:bean id="entryPoint" class="mx.com.adea.security.core.entrypoints.LoginUrlAuthenticationEntryPointJSON">
+        <b:property name="loginFormUrl" value="/index.jsp"/>
+    </b:bean>
+    
+    
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider  user-service-ref="userDetailsServiceInner">
+            <password-encoder hash="sha" base64="true"/>
+        </authentication-provider>
+    </authentication-manager>
+   
+    <b:bean id="successHandler"
+            class="org.kudytech.web.security.handler.AuthenticationSuccessHandler">
+    </b:bean>
+   
+</b:beans>

@@ -1,0 +1,52 @@
+.ui-themeswitcher a.ui-selectonemenu-label-container {
+    text-decoration: none !important;
+}
+
+.ui-widget {
+    font-size: 15px !important;
+}
+
+div#header{
+	padding: 0.5em;
+	color: gray;
+	clear: left;
+	height: 100px;
+	margin-left:10px;
+	
+}
+
+div#content {
+	margin-left:10px;
+	border-left: none;
+
+}
+
+div#left {
+	float: left;
+	width: 200px;
+	margin: 2;
+	padding: 1em;
+	height: 430px;
+	/*overflow: scroll;*/ 
+	font-family: serif;
+	font: cursive;
+	font-size: 10pt;
+	text-transform: capitalize;
+}
+
+div#footer {
+	padding: 0.5em;
+	color: black;
+	clear: left;
+	height: 50px;
+}
+
+.fileupload-buttonbar, .fileupload-content {
+	width: 140px;
+	background: none;
+	border: none;
+}
+
+.ui-panelgrid tr, .ui-panelgrid td {
+border:0 !important;
+}

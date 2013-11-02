@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/templates/common/commonLayout.xhtml">
+        <ui:define name="content">
+            <p></p>
+            <h1>
+                <h:outputText value="Cat&aacute;logo de Importancia" />
+            </h1>
+
+            <h:form>
+                <p:commandButton value="Nueva Importancia" icon="ui-icon-person"
+                                 oncomplete="dlgNuevo.show()"
+                                 actionListener="#{catImportanciaController.prepareInsert}" />
+                <!--update=":formNvo" />-->
+            </h:form>
+
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <h:form id="propiedades">
+                <p:dataTable var="catImportancia" value="#{catImportanciaController.list}"
+                             emptyMessage="No hay registros en la base" paginator="true"
+                             rows="10" paginatorPosition="bottom"
+                             paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="ID" filterBy="#{catImportancia.id}" style="text-align: center">
+                        <h:outputText value="#{catImportancia.id}" />
+                    </p:column>
+                    <p:column headerText="Descripcion" filterBy="#{catImportancia.descripcion}">
+                        <h:outputText value="#{catImportancia.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="T. M&aacute;ximo" filterBy="#{catImportancia.tiempoMaximo}">
+                        <h:outputText value="#{catImportancia.tiempoMaximo}" />
+                    </p:column>
+
+                    <p:column headerText="L. Alta" filterBy="#{catImportancia.loginAlta}">
+                        <h:outputText value="#{catImportancia.loginAlta}" />
+                    </p:column>
+
+                    <p:column headerText="F. Alta">
+                        <h:outputText value="#{catImportancia.fechaAlta}" style="text-align: center">
+                            <f:convertDateTime pattern="dd/MM/yyyy"  timeZone="GMT-6"  />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="L. Modificación" filterBy="#{catImportancia.loginModif}">
+                        <h:outputText value="#{catImportancia.loginModif}" />
+                    </p:column>
+
+                    <p:column headerText="F. Modificaci&oacute;n">
+                        <h:outputText value="#{catImportancia.fechaModif}" style="text-align: center">
+                            <f:convertDateTime pattern="dd/MM/yyyy"  timeZone="GMT-6"  />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Estatus" style="text-align: center">
+                        <p:graphicImage title=" Activo "  url="../resources/image/ACTIVE.png" rendered="#{catImportancia.estatus eq true}" width="24px" />
+                        <p:graphicImage title=" Inactivo "  url="../resources/image/INACTIVE.png" rendered="#{catImportancia.estatus eq false}" width="24px" />
+                    </p:column>
+
+                    <p:column style="width:13%; text-align:center" headerText="Acciones">
+                        <p:commandButton update=":propiedades,:messages,:formEditar"
+                                         icon="ui-icon-pencil"
+                                         actionListener="#{catImportanciaController.setCurrent(catImportancia)}"
+                                         title="Editar" oncomplete="dlgEditar.show()" />
+                        <p:commandButton update=":formEliminar" icon="ui-icon-trash"
+                                         actionListener="#{catImportanciaController.setCurrent(catImportancia)}"
+                                         title="Eliminar" oncomplete="dlgEliminar.show()" />
+
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+            <!--Fromulario nuevo--> 
+            <h:form id="formNvo">
+                <p:dialog header="Nuevo" widgetVar="dlgNuevo"
+                          resizable="true" id="dlgNuevo" showEffect="fade"
+                          hideEffect="explode" modal="true">
+                    <h:panelGrid id="pgNuevo" columns="2" cellpadding="4"
+                                 style="margin:0 auto;">
+                        <h:outputText value="Descripci&oacute;n" />
+                        <p:inputText value="#{catImportanciaController.current.descripcion}" maxlength="255" />
+                        <h:outputText value="Tiempo M&aacute;ximo" />
+                        <p:inputText value="#{catImportanciaController.current.tiempoMaximo}" maxlength="3" />
+                        <h:outputText value="Simult&aacute;neas" />
+                        <p:inputText value="#{catImportanciaController.current.simultaneas}" maxlength="3" />
+                    </h:panelGrid>
+                    <br />
+                    <center>
+                        <p:commandButton update=":propiedades,:messages" icon="ui-icon-check"
+                                         title="Aceptar" actionListener="#{catImportanciaController.insert(actionEvent)}"
+                                         oncomplete="dlgNuevo.hide()" value="Aceptar" />
+                        <p:commandButton update=":propiedades" icon="ui-icon-close"
+                                         title="Cancelar" oncomplete="dlgNuevo.hide()" value="Cancelar" />
+                    </center>
+
+                </p:dialog>
+            </h:form>
+
+            <h:form id="formEditar">
+                <p:dialog header="Editar" widgetVar="dlgEditar"
+                          resizable="true" id="dlgEditar" showEffect="fade"
+                          hideEffect="explode" modal="true">
+                    <h:panelGrid id="pgEditar" columns="2" cellpadding="4"
+                                 style="margin:0 auto;">
+                        <h:outputText value="ID" />
+                        <p:inputText value="#{catImportanciaController.current.id}" maxlength="10" readonly="true"/>
+                        <h:outputText value="Descripci&oacute;n" />
+                        <p:inputText value="#{catImportanciaController.current.descripcion}" maxlength="255" />
+                        <h:outputText value="Tiempo M&aacute;ximo" />
+                        <p:inputText value="#{catImportanciaController.current.tiempoMaximo}" maxlength="3" />
+                        <h:outputText value="Descripci&oacute;n" />
+                        <p:inputText value="#{catImportanciaController.current.simultaneas}" maxlength="3" />
+                    </h:panelGrid>
+                    <br />
+                    <center>
+                        <p:commandButton update=":propiedades,:messages" icon="ui-icon-check"
+                                         title="Actualizar"
+                                         actionListener="#{catImportanciaController.update(actionEvent)}"
+                                         oncomplete="dlgEditar.hide()" value="Aceptar" />
+                        <p:commandButton update=":propiedades" icon="ui-icon-close"
+                                         title="Cancelar" oncomplete="dlgEditar.hide()" value="Cancelar" />
+                    </center>
+                </p:dialog>
+            </h:form>
+            <!--Formulario de eliminacion--> 
+            <h:form id="formEliminar">
+                <p:confirmDialog id="dlgEliminar"
+                                 message="Esta seguro que desea eliminar este registro?"
+                                 header="Eliminar" severity="alert" widgetVar="dlgEliminar">
+                    <p:commandButton update=":propiedades,:messages" icon="ui-icon-check"
+                                     title="Eliminar" actionListener="#{catImportanciaController.remove(actionEvent)}"
+                                     oncomplete="dlgEliminar.hide()" value="Aceptar" />
+                    <p:commandButton update=":propiedades" icon="ui-icon-close"
+                                     title="Cancelar" oncomplete="dlgEliminar.hide()" value="Cancelar" />
+                </p:confirmDialog>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
